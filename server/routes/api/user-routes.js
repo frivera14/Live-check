@@ -6,6 +6,7 @@ const {
     createUser,
     updateUser,
     deleteUser,
+    userLogin,
 } = require('../../controllers/user-controller');
 
 router
@@ -18,6 +19,8 @@ router
     .get(getSingleUser)
     .put(updateUser)
     .delete(deleteUser);
+
+
 
 
 

@@ -20,6 +20,10 @@ const GanadoSchema = new Schema({
     propietario: {
         type: String,
         required: true
+    },
+    comprado: {
+        type: Boolean,
+        required: true
     }
 });
 

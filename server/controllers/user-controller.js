@@ -21,6 +21,25 @@ const userController = {
         .catch(err => res.status(400).json(err))
     },
 
+    userLogin(req, res) {
+        User.findOne({ username: req.body.username})
+        .then(async (userData) => {
+        
+        const user = await User.findOne(userData)
+        if (!user) {
+            return res.status(400).json({ message: 'no user'})
+        }
+
+        const correctPw = await user.isCorrectPassword(req.body.password)
+
+        if (!correctPw) {
+            return res.status(401).json({ message: 'Incorrect password'})
+        }
+        return res.status(200).json({ message: 'Logged in!'})
+
+        })
+        .catch(err => res.json(err))
+    },
 
     updateUser( { params, body}, res) {
         User.findOneAndUpdate({ _id: params.id}, body, {new: true, runValidators: true})
