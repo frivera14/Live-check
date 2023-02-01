@@ -1,5 +1,5 @@
 const { Rancho } = require('../models');
-const { User } = require('../models')
+const { User } = require('../models');
 
 const ranchoController = {
 
@@ -9,13 +9,19 @@ const ranchoController = {
             return User.findOneAndUpdate({ _id: params.id}, { $push: { ranchos: data }}, {new: true, runValidators: true})
 
         })
-        .then(newData => res.json(newData))
+        .then(newData => res.status(200).json(newData))
         .catch(err => res.json(err))
     },
 
     createGanado({params, body}, res) {
         Rancho.findOneAndUpdate({ _id: params.id}, { $push: {ganado: body }}, { new: true})
         .then(data => res.json(data))
+        .catch(err => res.status(500).json(err))
+    },
+
+    deleteGanado({params}, res) {
+        Rancho.findByIdAndUpdate({ _id: params.ranchoId}, {$pull: { ganado: { ganadoId: params.ganadoId}}}, {new: true, runValidators: true})
+        .then(data => res.status(200).json(data))
         .catch(err => res.status(500).json(err))
     },
 

@@ -1,6 +1,10 @@
 const { Schema, model, Types } = require('mongoose');
 
 const GanadoSchema = new Schema({
+    ganadoId: {
+        type: Schema.Types.ObjectId,
+        default: () => new Types.ObjectId
+    },
     tipo: {
         type: String, 
         required: true
@@ -19,7 +23,7 @@ const GanadoSchema = new Schema({
     },
     comprado: {
         type: Boolean,
-        required: true
+        default: true
     }
 });
 
@@ -48,7 +52,7 @@ const RanchoSchema = new Schema({
 
 const Rancho = model('Rancho', RanchoSchema);
 
-module.exports = Rancho;
+module.exports = Rancho, GanadoSchema;
 
 
 
