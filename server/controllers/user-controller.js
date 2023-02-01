@@ -17,6 +17,7 @@ const userController = {
 
     getSingleUser({ params }, res) {
         User.findOne({ _id: params.id })
+        .populate({ path: 'ranchos', select: '-__v'})
         .then(data => res.json(data))
         .catch(err => res.status(400).json(err))
     },

@@ -1,10 +1,6 @@
 const { Schema, model, Types } = require('mongoose');
 
 const GanadoSchema = new Schema({
-    ganadoId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId()
-    },
     tipo: {
         type: String, 
         required: true
@@ -28,19 +24,25 @@ const GanadoSchema = new Schema({
 });
 
 const RanchoSchema = new Schema({
-    name: {
+    ranchName: {
         type: String,
+        trim: true,
         required: true
     },
     ganado: [GanadoSchema],
     alimento: {
-        type: Number
+        type: Number,
+        required: true
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, {
     toJSON: {
         virtuals: true,
         getters: true
-    },
+        },
     id: false
 });
 

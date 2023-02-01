@@ -6,8 +6,11 @@ const {
     createUser,
     updateUser,
     deleteUser,
-    userLogin,
 } = require('../../controllers/user-controller');
+
+const {
+    createRancho
+} = require('../../controllers/rancho-controller')
 
 router
     .route('/')
@@ -17,6 +20,7 @@ router
 router
     .route('/:id')
     .get(getSingleUser)
+    .post(createRancho)
     .put(updateUser)
     .delete(deleteUser);
 
