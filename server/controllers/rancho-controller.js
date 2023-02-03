@@ -51,7 +51,7 @@ const ranchoController = {
         })
         .catch(err => res.json(err))
         
-    },
+    },  
 
     getSingleRancho({params}, res) {
         Rancho.findOne({ _id: params.id})
