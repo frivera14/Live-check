@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+.jober:hover{
+  border-color: aliceblue;  
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -14,7 +18,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #ffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -26,6 +30,10 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.fonter {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 @keyframes App-logo-spin {

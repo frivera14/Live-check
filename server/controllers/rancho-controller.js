@@ -19,8 +19,20 @@ const ranchoController = {
         .catch(err => res.status(500).json(err))
     },
 
+    createSalida({params, body}, res) {
+        Rancho.findOneAndUpdate({ _id: params.id}, { $push: {salidas: body }}, { new: true})
+        .then(data => res.json(data))
+        .catch(err => res.status(500).json(err))
+    },
+    
     deleteGanado({params}, res) {
         Rancho.findByIdAndUpdate({ _id: params.ranchoId}, {$pull: { ganado: { ganadoId: params.ganadoId}}}, {new: true, runValidators: true})
+        .then(data => res.status(200).json(data))
+        .catch(err => res.status(500).json(err))
+    },
+    
+    deleteSalida({params}, res) {
+        Rancho.findByIdAndUpdate({ _id: params.ranchoId}, {$pull: { salidas: { salidaId: params.salidaId}}}, {new: true, runValidators: true})
         .then(data => res.status(200).json(data))
         .catch(err => res.status(500).json(err))
     },
