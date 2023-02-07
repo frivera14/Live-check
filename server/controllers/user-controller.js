@@ -3,7 +3,14 @@ const { User } = require('../models')
 const userController = {
     createUser( { body }, res) {
         User.create(body)
-        .then(data => res.json(data))
+        .then((data) => {
+            req.session.save(() => {
+                req.session.userId = data._id,
+                req.session.loggedIn = true;
+
+                res.json(data)
+            });
+        })
         .catch(err => res.status(400).json(err))
     },
 
@@ -36,10 +43,22 @@ const userController = {
         if (!correctPw) {
             return res.status(401).json({ message: 'Incorrect password'})
         }
-        return res.status(200).json({ message: 'Logged in!'})
+        const token = signToken(user)
 
+        return  res.status(200).json({ message: 'Logged in!', data: token})
+   
         })
         .catch(err => res.json(err))
+    },
+
+    userLogout(req, res) {
+        if (req.session.loggedIn) {
+            req.session.destroy(() => {
+                res.status(204).end()
+            })
+        } else {
+            res.status(404).end()
+        }
     },
 
     updateUser( { params, body}, res) {

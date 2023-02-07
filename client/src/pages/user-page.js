@@ -1,22 +1,24 @@
-import React from 'react';
-import { useState } from 'react'
+import React,  { useEffect, useState } from 'react';
 
 
 function UserPage() {
-    let link = ''
-    
+    let url = window.location.pathname
+    let eluser = url.split('/users/')
+
+    let query = `/api/users/${eluser[1]}`
+
+
     const [view, setView] = useState([])
 
-    const getData = () => {
-        fetch(link)
-        .then(res => res.json())
-        .then((data) => setView(data))
-    }
+    useEffect(() => {
+        fetch(query)
+       .then(res => res.json())
+       .then((data) => setView(data))
+    })
 
     return (
         <>
 
-            {getData()}
             <div className='m-4'>
 
                 <table className='table table-secondary table-striped'>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Modal from 'react-bootstrap/Modal'
 
 
 function IndRanch() {
@@ -8,7 +8,9 @@ function IndRanch() {
 
     const [view, setView] = useState([])
 
-    console.log(url)
+    const [lgShow, setLgShow] = useState(false);
+
+
     const getData = () => {
         fetch(`/api/ranchos/${url[1]}`)
             .then(res => res.json())
@@ -20,7 +22,48 @@ function IndRanch() {
 
             <h1 className='m-4 text-light'>ENTRADA</h1>
             <h3 className='m-4 text-light'>Cabezas de Ganado: {view.currentCount}</h3>
-            <button type='button' className='m-4 btn btn-primary bg-gradient'> + Agregar Compra</button>
+            <button onClick={() => setLgShow(true)} className='m-4 btn btn-primary bg-gradient'> + Agregar Compra</button>
+            <Modal
+                show={lgShow}
+                onHide={() => setLgShow(false)}
+                size='xl'
+                aria-labelledby="example-custom-modal-styling-title"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="example-custom-modal-styling-title">
+                        Registre los datos aqui:
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <table className='table table-secondary table-striped'>
+                        <thead>
+                            <tr>
+                                <th scope={'col'}>SINIIIGA</th>
+                                <th scope={'col'}>ETAPA REP.</th>
+                                <th scope={'col'}>GUIA</th>
+                                <th scope={'col'}>REMO</th>
+                                <th scope={'col'}>ORIGEN</th>
+                                <th scope={'col'}>PROPIETARIO</th>
+                                <th scope={'col'}>CONSIGNADO</th>
+                                <th scope={'col'}>OBSERVACION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input name='siniga' style={{width: '120px'}} type={'text'} /></td>
+                                <td><input name='etapa' style={{width: '120px'}} type={'text'} /></td>
+                                <td><input name='guia' style={{width: '120px'}} type={'text'} /></td>
+                                <td><input name='remo' style={{width: '120px'}} type={'text'} /></td>
+                                <td><input name='origen' style={{width: '120px'}} type={'text'} /></td>
+                                <td><input name='propietario' style={{width: '120px'}} type={'text'} /></td>
+                                <td><input name='consignado' style={{width: '120px'}} type={'text'} /></td>
+                                <td><input name='observacion' style={{width: '120px'}} type={'text'} /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                </Modal.Body>
+            </Modal>
             <div className='m-4 p-2 d-flex justify-content-around'>
                 <table className='table table-secondary table-striped'>
                     <thead className='table-dark'>
