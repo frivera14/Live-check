@@ -17,7 +17,7 @@ const userController = {
 
     getSingleUser({ params }, res) {
         User.findOne({ _id: params.id })
-        .populate({ path: 'ranchos', select: '-__v'})
+        .populate({ path: 'ranchos'})
         .then(data => res.json(data))
         .catch(err => res.status(400).json(err))
     },
@@ -57,7 +57,7 @@ const userController = {
         User.findOneAndDelete({ _id: params.id })
             .then(userData => res.json(userData))
             .catch(err => res.status(400).json(err));
-    },
+    }
 }
 
 module.exports = userController;

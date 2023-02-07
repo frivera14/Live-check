@@ -21,6 +21,9 @@ const UserSchema = new Schema({
         virtuals: true,
         getters: true,
     },
+    toObject: {
+        virtuals: true
+    },
     id: false
 });
 

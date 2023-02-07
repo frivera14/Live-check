@@ -1,41 +1,30 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
+const dateFormat = require('../utils/dateFormat')
 
 const GanadoSchema = new Schema({
-    ganadoId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId
-    },
     siniiiga: {
         type: Number,
-        required: true,
     },
     etapa: {
         type: String, 
-        required: true
     },
     guia: {
         type: String, 
-        required: true
     },
     remo: {
         type: Number, 
-        required: true
     },
     origen: {
         type: String,
-        required: true,
     },
     propietario: {
         type: String,
-        required: true
     },
     consignado: {
         type: String,
-        required: true
     },
     observacion: {
         type: String,
-        required: true
     },
     comprado: {
         type: Boolean,
@@ -43,52 +32,19 @@ const GanadoSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now,
+        get: (createdVal) => dateFormat(createdVal)
     }
+},
+{
+    toJSON: {
+        virtuals: true,
+        getters: true
+    },
+    id: false
 });
 
-const SalidaSchema = new Schema({
-    salidaId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now()
-    },
-    vencimiento: {
-        type: String,
-        required: true
-    },
-    siniiiga: {
-        type: Number,
-        required: true
-    },
-    etapa: {
-        type: String,
-        required: true
-    },
-    guia: {
-        type: String, 
-        required: true
-    },
-    reemo: {
-        type: Number,
-        required: true
-    },
-    psgdestino: {
-        type: String,
-        required: true
-    },
-    consignatario: {
-        type: String,
-        requierd: true
-    },
-    propietario: {
-        type: String,
-        required: true
-    }
-});
+const Ganado = model('Ganado', GanadoSchema)
 
 const RanchoSchema = new Schema({
     ranchName: {
@@ -96,11 +52,16 @@ const RanchoSchema = new Schema({
         trim: true,
         required: true
     },
-    ganado: [GanadoSchema],
-    salidas: [SalidaSchema],
+    ganado: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Ganado'
+    }],
     alimento: {
         type: Number,
         required: true
+    },
+    diesel: {
+        type: Number,
     },
     owner: {
         type: Schema.Types.ObjectId,
@@ -111,12 +72,28 @@ const RanchoSchema = new Schema({
         virtuals: true,
         getters: true
         },
+    toObject: {
+        virtuals: true
+    },
     id: false
 });
 
+RanchoSchema.virtual('currentCount').get(function () {
+    let count = 0
+    this.ganado.map((item) => {
+        if (item.comprado) {
+           return count++
+        }
+    })
+    return count
+}).set(function (v) {
+    this.set({v})
+})
+
 const Rancho = model('Rancho', RanchoSchema);
 
-module.exports = Rancho;
+
+module.exports = {Rancho, Ganado};
 
 
 

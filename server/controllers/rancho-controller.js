@@ -1,5 +1,6 @@
-const { Rancho } = require('../models');
+const { Rancho, Ganado }  = require('../models/Rancho');
 const { User } = require('../models');
+
 
 const ranchoController = {
 
@@ -14,33 +15,35 @@ const ranchoController = {
     },
 
     createGanado({params, body}, res) {
-        Rancho.findOneAndUpdate({ _id: params.id}, { $push: {ganado: body }}, { new: true})
-        .then(data => res.json(data))
+        Ganado.create(body)
+        .then((data) => {
+            return Rancho.findOneAndUpdate({ _id: params.id}, { $push: {ganado: data }}, { new: true, runValidators: true})
+        })
+        .then(newData => res.status(200).json(newData))
         .catch(err => res.status(500).json(err))
     },
 
-    createSalida({params, body}, res) {
-        Rancho.findOneAndUpdate({ _id: params.id}, { $push: {salidas: body }}, { new: true})
-        .then(data => res.json(data))
-        .catch(err => res.status(500).json(err))
+    updateGanado({body}, res) {
+        Ganado.findOneAndUpdate({_id: body._id }, body, { new: true, runValidators: true })
+        .then((data) => res.status(200).json(data))
+        .catch(err => res.json(err))
     },
     
     deleteGanado({params}, res) {
         Rancho.findByIdAndUpdate({ _id: params.ranchoId}, {$pull: { ganado: { ganadoId: params.ganadoId}}}, {new: true, runValidators: true})
-        .then(data => res.status(200).json(data))
+        .then(data => res.json(data))
+        .then((update) => {
+            return Rancho.findByIdAndUpdate({ _id: params.ranchoId}, {$push: {salidas: update}}, {new: true, runValidators: true})
+        })
+        .then(newData => res.json(data))
         .catch(err => res.status(500).json(err))
     },
     
-    deleteSalida({params}, res) {
-        Rancho.findByIdAndUpdate({ _id: params.ranchoId}, {$pull: { salidas: { salidaId: params.salidaId}}}, {new: true, runValidators: true})
-        .then(data => res.status(200).json(data))
-        .catch(err => res.status(500).json(err))
-    },
 
     getRanchos(req, res) {
         Rancho.find({})
         .populate({ path: 'ranchName'})
-        .populate({ path: 'ganado', select: '-__v'})
+        .populate({ path: 'ganado'})
         .populate({ path: 'owner'})
         .select('-__v')
         .then(data => {
@@ -61,16 +64,10 @@ const ranchoController = {
     }, 
 
     deleteRancho({params}, res) {
-        Rancho.findOneAndDelete({ id: params.id})
+        Rancho.findOneAndDelete({ id: params.id}, {new: true})
         .then(data => res.json(data))
         .catch(err => res.status(500).json(err))
-    },
-
-
-
-
-
-
+    }
 
 }
 
