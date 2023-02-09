@@ -6,7 +6,7 @@ const {
     deleteRancho,
     createGanado,
     updateGanado,
-    deleteGanado
+    deleteGanado,
 
 } = require('../../controllers/rancho-controller');
 

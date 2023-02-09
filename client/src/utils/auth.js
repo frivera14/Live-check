@@ -26,9 +26,14 @@ class AuthService {
   }
 
   login(idToken) {
-    localStorage.setItem('id_token', idToken);
-    localStorage.setItem('loggedIn', true);
-    window.location.assign('/');
+
+    if (typeof idToken !== 'undefined') {
+      localStorage.setItem('id_token', idToken);
+      localStorage.setItem('loggedIn', true);
+      window.location.assign(`/`);
+    } else {
+      alert('Error: Este usuario ya existe')
+    }
   }
 
   logout() {
@@ -37,6 +42,6 @@ class AuthService {
   }
 };
 
-const newAuth = new AuthService()
+const newAuth = new AuthService();
 
-export default  newAuth;
+export default newAuth;

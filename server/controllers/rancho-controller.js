@@ -43,7 +43,7 @@ const ranchoController = {
     getRanchos(req, res) {
         Rancho.find({})
         .populate({ path: 'ranchName'})
-        .populate({ path: 'ganado'})
+        .populate({ path: 'ganado' }, {$sort: {_id: -1}})
         .populate({ path: 'owner'})
         .select('-__v')
         .then(data => {

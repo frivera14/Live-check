@@ -1,75 +1,68 @@
 const { User } = require('../models')
+const { signToken } = require('../utils/auth')
 
 const userController = {
-    createUser( { body }, res) {
+    createUser({ body }, res) {
         User.create(body)
-        .then((data) => {
-            req.session.save(() => {
-                req.session.userId = data._id,
-                req.session.loggedIn = true;
+            .then(async (newData) => {
+                const user = await User.findOne(newData)
+                if (!user) {
+                    alert('Error: No user found/Existing User')
+                }
+                const token = signToken(user)
+                res.json({ token })
 
-                res.json(data)
-            });
-        })
-        .catch(err => res.status(400).json(err))
+            })
+            .catch(err => res.status(400).json(err))
     },
 
-    getAllUsers( req, res) {
+    getAllUsers(req, res) {
         User.find({})
-        .populate({ path: 'ranchos', select: '-__v'})
-        .select('-__v')
-        .then(data => res.json(data))
-        .catch(err => res.status(400).json(err))
+            .populate({ path: 'ranchos', select: '-__v' })
+            .select('-__v')
+            .then(data => res.json(data))
+            .catch(err => res.status(400).json(err))
     },
 
     getSingleUser({ params }, res) {
         User.findOne({ _id: params.id })
-        .populate({ path: 'ranchos'})
-        .then(data => res.json(data))
-        .catch(err => res.status(400).json(err))
+            .populate({ path: 'ranchos' })
+            .then(data => res.json(data))
+            .catch(err => res.status(400).json(err))
     },
 
     userLogin(req, res) {
-        User.findOne({ username: req.body.username})
-        .then(async (userData) => {
-        
-        const user = await User.findOne(userData)
-        if (!user) {
-            return res.status(400).json({ message: 'no user'})
-        }
+        User.findOne({ username: req.body.username })
+            .then(async (userData) => {
 
-        const correctPw = await user.isCorrectPassword(req.body.password)
+                const user = await User.findOne(userData)
+                if (!user) {
+                    return res.status(400).json({ message: 'no user' })
+                }
 
-        if (!correctPw) {
-            return res.status(401).json({ message: 'Incorrect password'})
-        }
-        const token = signToken(user)
+                const correctPw = await user.isCorrectPassword(req.body.password)
 
-        return  res.status(200).json({ message: 'Logged in!', data: token})
-   
-        })
-        .catch(err => res.json(err))
-    },
+                if (!correctPw) {
+                    return res.status(401).json({ message: 'Incorrect password' })
+                }
+                const token = signToken(user)
 
-    userLogout(req, res) {
-        if (req.session.loggedIn) {
-            req.session.destroy(() => {
-                res.status(204).end()
+                return res.status(200).json({ token, user })
+
             })
-        } else {
-            res.status(404).end()
-        }
+            .catch(err => res.json(err))
     },
 
-    updateUser( { params, body}, res) {
-        User.findOneAndUpdate({ _id: params.id}, body, {new: true, runValidators: true})
-        .then(data => {
-            if(!data) {
-                res.status(400).json({ message: 'No hay usuario'})
-            }
-            res.json(data)
-        })
-        .catch(err => res.status(400).json(err))
+
+    updateUser({ params, body }, res) {
+        User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+            .then(data => {
+                if (!data) {
+                    res.status(400).json({ message: 'No hay usuario' })
+                }
+                res.json(data)
+            })
+            .catch(err => res.status(400).json(err))
     },
 
     deleteUser({ params }, res) {

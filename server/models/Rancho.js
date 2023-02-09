@@ -3,7 +3,8 @@ const dateFormat = require('../utils/dateFormat')
 
 const GanadoSchema = new Schema({
     siniiiga: {
-        type: Number,
+        type: String,
+        unique: true
     },
     etapa: {
         type: String, 
@@ -12,7 +13,7 @@ const GanadoSchema = new Schema({
         type: String, 
     },
     remo: {
-        type: Number, 
+        type: String, 
     },
     origen: {
         type: String,
@@ -54,7 +55,8 @@ const RanchoSchema = new Schema({
     },
     ganado: [{
         type: Schema.Types.ObjectId,
-        ref: 'Ganado'
+        ref: 'Ganado',
+        
     }],
     alimento: {
         type: Number,
