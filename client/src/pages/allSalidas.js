@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Auth from '../utils/auth'
 
-function AllCows() {
+function AllSalidas() {
 
     const ranchId = window.location.pathname.split('/')
 
@@ -11,14 +11,13 @@ function AllCows() {
 
     const [buttonValue, setValue] = useState('↓')
 
-
     useEffect(() => {
         fetch(`/api/ranchos/${ranchId[2]}`)
             .then(res => res.json())
             .then((data) => {
                 const cows = data.ganado.reverse()
                 setRanch(data)
-                return  setView(cows)
+                return setView(cows)
             })
     }, []);
 
@@ -27,28 +26,30 @@ function AllCows() {
         return viewCows.reverse()
     }
 
+
     return (
         <>
             {Auth.getToken() && Auth.getProfile().data._id === ranchData.owner ? <>
                 <div className='m-4 p-2 d-flex justify-content-around'>
+
                     <table className='table table-secondary table-striped'>
                         <thead className='table-dark'>
+
                             <tr>
                                 <th scope={'col'}>SINIIIGA</th>
                                 <th scope={'col'}>ETAPA REP.</th>
                                 <th scope={'col'}>GUIA</th>
                                 <th scope={'col'}>REMO</th>
-                                <th scope={'col'}>ORIGEN</th>
-                                <th scope={'col'}>PROPIETARIO</th>
+                                <th scope={'col'}>DESTINO</th>
                                 <th scope={'col'}>CONSIGNADO</th>
-                                <th scope={'col'}>OBSERVACION</th>
-                                <th scope={'col'}>FECHA DE COMPRA</th>
+                                <th scope={'col'}>PROPIETARIO</th>
+                                <th scope={'col'}>FECHA DE VENTA</th>
                                 <button className='btn btn-dark' onClick={handleSwitch}>{buttonValue}</button>
                             </tr>
                         </thead>
                         <tbody>
                             {viewCows.map((item) => {
-                                return item.comprado ?
+                                return !item.comprado ?
                                     <>
                                         <tr>
 
@@ -59,7 +60,6 @@ function AllCows() {
                                             <td className='p-2 m-2'>{item.origen}</td>
                                             <td className='p-2 m-2'>{item.propietario}</td>
                                             <td className='p-2 m-2'>{item.consignado}</td>
-                                            <td className='p-2 m-2'>{item.observacion}</td>
                                             <td className='p-2 m-2'>{item.createdAt}</td>
 
                                         </tr>
@@ -68,16 +68,18 @@ function AllCows() {
 
                             })}
 
+
                         </tbody>
                     </table>
                 </div>
 
-            </> : <>
-                <h3 className='m-4 text-light'>No tienes acceso a estos datos</h3>
-            </>}
-           
+            </> :
+                <>
+            <h3 className='text-light m-4'>No tienes accesso a estos datos</h3>
+                </>}
+
         </>
     )
 }
 
-export default AllCows
+export default AllSalidas

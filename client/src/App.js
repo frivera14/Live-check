@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import AllCows from './pages/allGanado'
+import AllSalidas from './pages/allSalidas';
 
 function App() {
   const [show, setShow] = useState(false);
@@ -158,6 +159,7 @@ function App() {
           <Route exact path='/ranchos/:id' component={OneRanch}></Route>
           <Route exact path='/users/:id' component={UserPage}></Route>
           <Route exact path='/ranchos/:id/ganado' component={AllCows}></Route>
+          <Route exact path='/ranchos/:id/salidas' component={AllSalidas}></Route>
         </Switch>
       </Router>
     </>

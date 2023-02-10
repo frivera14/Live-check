@@ -14,6 +14,8 @@ class AuthService {
     try {
       const decoded = decode(token);
       if (decoded.exp < Date.now() / 1000) {
+        localStorage.clear()
+        window.location.reload()
         return true;
       } else return false;
     } catch (err) {
@@ -32,7 +34,7 @@ class AuthService {
       localStorage.setItem('loggedIn', true);
       window.location.assign(`/`);
     } else {
-      alert('Error: Este usuario ya existe')
+      alert('Error: Error en los datos o Este usuario ya existe')
     }
   }
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal'
 import Auth from '../utils/auth'
+import Salidas from './components/salidasComp';
 
 
 function IndRanch() {
@@ -13,14 +14,14 @@ function IndRanch() {
 
     const [lgShow, setLgShow] = useState(false);
 
-    const [showLog, setLog] = useState(false)
+    const [showLog, setLog] = useState(false);
 
     const [entryRow, setEntry] = useState({ siniiiga: '', etapa: '', guia: '', remo: '', origen: '', propietario: '', consignado: '', observacion: '' })
 
     const message = () => {
         return (
             <>
-                {showLog ? <h6 className='text-success'>Registrado! </h6> : null}
+                {showLog ? <h6 className='text-success'>Registrado!</h6> : <></>}
             </>
         )
     }
@@ -30,6 +31,7 @@ function IndRanch() {
         setLog(false)
         setEntry({ ...entryRow, [name]: value })
     }
+
 
     React.useEffect(() => {
         fetch(`/api/ranchos/${url[1]}`)
@@ -87,7 +89,7 @@ function IndRanch() {
                             <div className='d-flex flex-column'>
 
                                 <table className='table table-secondary table-striped'>
-                                    <thead>
+                                    <thead className='table-dark'>
                                         <tr>
                                             <th scope={'col'}>SINIIIGA</th>
                                             <th scope={'col'}>ETAPA REP.</th>
@@ -159,44 +161,10 @@ function IndRanch() {
                         </table>
                     </div>
                     <a className='d-flex justify-content-center text-light h5' href={`/ranchos/${view._id}/ganado`}>Ver mas</a>
-                    <h1 className='m-4 text-light'>SALIDA</h1>
-                    <button type='button' className='m-4 btn btn-primary bg-gradient'> + Agregar Salida</button>
 
-                    <div className='m-4 p-2 d-flex justify-content-around'>
-
-                        <table className='table table-secondary table-striped'>
-                            <thead className='table-dark'>
-                                <tr>
-                                    <th scope={'col'}>SINIIIGA</th>
-                                    <th scope={'col'}>ETAPA REP.</th>
-                                    <th scope={'col'}>GUIA</th>
-                                    <th scope={'col'}>REMO</th>
-                                    <th scope={'col'}>DESTINO</th>
-                                    <th scope={'col'}>CONSIGNADO</th>
-                                    <th scope={'col'}>PROPIETARIO</th>
-                                    <th scope={'col'}>FECHA DE VENTA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                {/* Marked as sold or 'false display */}
-                                {vacas.map((item) => {
-                                    return item.comprado ? null : <tr>
-
-                                        <td className='p-2 m-2'>{item.siniiiga}</td>
-                                        <td className='p-2 m-2'>{item.etapa}</td>
-                                        <td className='p-2 m-2'>{item.guia}</td>
-                                        <td className='p-2 m-2'>{item.remo}</td>
-                                        <td className='p-2 m-2'>{item.origen}</td>
-                                        <td className='p-2 m-2'>{item.consignado}</td>
-                                        <td className='p-2 m-2'>{item.propietario}</td>
-                                        <td className='p-2 m-2'>{item.createdAt}</td>
-
-                                    </tr>
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+                    {/* Start Salida Component here */}
+                   <Salidas vacas={vacas}></Salidas>
+                   <a className='d-flex justify-content-center text-light h5 mb-4' href={`/ranchos/${view._id}/salidas`}>Ver mas</a>
 
                 </>
                 : <h3 className='m-4 text-light'> No tienes accesso a estos datos </h3>
