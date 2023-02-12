@@ -54,7 +54,8 @@ function IndRanch() {
         }).then(res => res.json())
             .then(() => {
                 setLog(true)
-                setEntry({ siniiiga: '' })
+                entryRow.siniiiga = ''
+                console.log(entryRow)
             }
             )
     }
@@ -101,7 +102,7 @@ function IndRanch() {
                                             <th scope={'col'}>OBSERVACION</th>
                                         </tr>
                                     </thead>
-                                    <tbody className=''>
+                                    <tbody>
                                         <tr>
                                             <td><input onChange={handleChange} value={entryRow.siniiiga} name='siniiiga' style={{ maxWidth: '100px' }} type={'text'} /></td>
                                             <td><input onChange={handleChange} value={entryRow.etapa} name='etapa' style={{ maxWidth: '100px' }} type={'text'} /></td>
@@ -163,7 +164,7 @@ function IndRanch() {
                     <a className='d-flex justify-content-center text-light h5' href={`/ranchos/${view._id}/ganado`}>Ver mas</a>
 
                     {/* Start Salida Component here */}
-                   <Salidas vacas={vacas}></Salidas>
+                   <Salidas vacas={vacas.reverse()}></Salidas>
                    <a className='d-flex justify-content-center text-light h5 mb-4' href={`/ranchos/${view._id}/salidas`}>Ver mas</a>
 
                 </>
