@@ -5,9 +5,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(92, 89, 89);
+  background-color: #F4EBD0;
+  color: #4B4848;
 }
 
+.inventada {
+  transform: rotate(180deg)
+}
 
 
 code {

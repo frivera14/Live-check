@@ -18,8 +18,7 @@ const userController = {
 
     getAllUsers(req, res) {
         User.find({})
-            .populate({ path: 'ranchos', select: '-__v' })
-            .select('-__v')
+            .populate({ path: 'ranchos' })
             .then(data => res.json(data))
             .catch(err => res.status(400).json(err))
     },
@@ -69,6 +68,12 @@ const userController = {
         User.findOneAndDelete({ _id: params.id })
             .then(userData => res.json(userData))
             .catch(err => res.status(400).json(err));
+    },
+
+    deleteManyUsers(req, res) {
+        User.deleteMany({})
+        .then(data => res.json(data))
+        .catch(err => res.json(err))
     }
 }
 

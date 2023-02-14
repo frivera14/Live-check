@@ -1,70 +1,68 @@
-import React,  { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
+import Card from 'react-bootstrap/Card'
 
-function UserPage() {
-    let url = window.location.pathname
-    let eluser = url.split('/users/')
-
-    let query = `/api/users/${eluser[1]}`
+function UserPage({ profileId }) {
 
     const [show, setShow] = useState(false)
 
-    const [formData, setFormData] = useState({ ranchName: '', alimento: '', diesel: '', owner: eluser[1]})
+    const [view, setView] = useState([])
+
+    const apiUrl = `/api/users/${profileId}`
+
+    const [formData, setFormData] = useState({ ranchName: '', ubicacion: '', owner: profileId })
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({...formData, [name]: value})
-    }
-
-    const [view, setView] = useState([])
+        setFormData({ ...formData, [name]: value })
+    };
 
     useEffect(() => {
-        fetch(query)
-       .then(res => res.json())
-       .then((data) => setView(data))
-    }, [])
+        fetch(apiUrl)
+            .then(res => res.json())
+            .then((data) => setView(data))
+    }, [apiUrl])
 
     const makeRanch = (e) => {
         e.preventDefault();
-
-        fetch(query, {
+        fetch(apiUrl, {
             method: "post",
             body: JSON.stringify(formData),
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         })
-        .then(res => res.json())
-        .then(() => window.location.reload())
-     }
+            .then(res => res.json())
+            .then(() => setShow(false))
+    }
 
     return (
         <>
 
-            <div className='m-4'>
+            <div>
 
-                <button type='button' onClick={() => setShow(true)} className='btn btn-primary mb-2'>+ Agregar Rancho</button>
-                <table className='table table-secondary table-striped'>
-                    <thead className='table-dark'>
-                        <tr>
-                            <th scope={'col'}>Rancho</th>
-                            <th scope={'col'}>Kilos de Alimento</th>
-                            <th scope={'col'}>Diesel</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <button type='button' onClick={() => setShow(true)} className='btn btn-success mb-2'>+ Agregar Rancho</button>
 
 
-                        {view.ranchos?.map((item) => {
-                            return <tr>
 
-                                <td className='p-2 m-2'><a href={`/ranchos/${item._id}`}>{item.ranchName}</a></td>
-                                <td className='p-2 m-2'>{item.alimento} Kilos</td>
-                                <td className='p-2 m-2'>{item.diesel} Litros</td>
 
-                            </tr>
-                        })}
-                    </tbody>
-                </table>
+                {view.ranchos?.map((item) => {
+                    return <>
+                        <Card style={{backgroundColor: '#F4EBD0', borderColor: '#59981A'}} text='dark' className='mb-2'>
+                            <Card.Header style={{borderColor: '#59981A'}}>
+
+                            <Card.Title>
+                                <a style={{ color: '#122620', textDecoration: 'none' }}  href={`/ranchos/${item._id}`}>{item.ranchName}</a>
+
+                            </Card.Title>
+                            </Card.Header>
+                            <Card.Body style={{ padding: '10px', marginLeft: '8px' }}>
+                                Ubicacion:  {item.ubicacion}
+                            </Card.Body>
+                        </Card>
+                    </>
+                })}
+
+
             </div>
             <Modal show={show} onHide={() => setShow(false)}>
                 <Modal.Header>
@@ -74,31 +72,22 @@ function UserPage() {
                     <Form>
                         <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
                             <Form.Label>Nombre del Rancho:</Form.Label>
-                                <Form.Control
+                            <Form.Control
                                 type='text'
                                 autoFocus
                                 name='ranchName'
                                 onChange={handleChange}
                                 value={formData.ranchName}
-                                />
+                            />
                         </Form.Group>
                         <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
-                            <Form.Label>Kilos de Alimento Actuales:</Form.Label>
-                                <Form.Control
+                            <Form.Label>Ubicacion</Form.Label>
+                            <Form.Control
                                 type='text'
-                                name='alimento'
+                                name='ubicacion'
                                 onChange={handleChange}
-                                value={formData.alimento}
-                                />
-                        </Form.Group>
-                        <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
-                            <Form.Label>Galones o Litros de Diesel</Form.Label>
-                                <Form.Control
-                                type='text'
-                                name='diesel'
-                                onChange={handleChange}
-                                value={formData.diesel}
-                                />
+                                value={formData.ubicacion}
+                            />
                         </Form.Group>
                         <button type='button' onClick={makeRanch} className='btn btn-dark'>Registrar Rancho</button>
                     </Form>

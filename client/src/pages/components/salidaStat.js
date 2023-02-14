@@ -1,4 +1,5 @@
 import React from 'react';
+import { dateFormat } from '../../utils/dateFormat';
 
 function SalidaStat({ item }) {
     return (
@@ -10,6 +11,7 @@ function SalidaStat({ item }) {
             <td>{item.origen}</td>
             <td>{item.propietario}</td>
             <td>{item.consignado}</td>
+            <td>{dateFormat(item.createdAt)}</td>
         </>
     )
 }

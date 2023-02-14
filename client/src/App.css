@@ -8,7 +8,11 @@
 }
 
 .jober:hover{
-  border-color: aliceblue;  
+  border-color: #B68D40;  
+}
+
+.inventada {
+  transform: rotate(180deg);
 }
 
 

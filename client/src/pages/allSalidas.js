@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Auth from '../utils/auth'
+import { dateFormat } from '../utils/dateFormat';
 
 function AllSalidas() {
 
@@ -32,8 +33,8 @@ function AllSalidas() {
             {Auth.getToken() && Auth.getProfile().data._id === ranchData.owner ? <>
                 <div className='m-4 p-2 d-flex justify-content-around'>
 
-                    <table className='table table-secondary table-striped'>
-                        <thead className='table-dark'>
+                    <table className='table table-light table-striped'>
+                        <thead className='table text-light' style={{ backgroundColor: '#122620'}}>
 
                             <tr>
                                 <th scope={'col'}>SINIIIGA</th>
@@ -49,7 +50,7 @@ function AllSalidas() {
                         </thead>
                         <tbody>
                             {viewCows.map((item) => {
-                                return !item.comprado ?
+                                return item.status === 'Vendido' ?
                                     <>
                                         <tr>
 
@@ -60,7 +61,7 @@ function AllSalidas() {
                                             <td className='p-2 m-2'>{item.origen}</td>
                                             <td className='p-2 m-2'>{item.propietario}</td>
                                             <td className='p-2 m-2'>{item.consignado}</td>
-                                            <td className='p-2 m-2'>{item.createdAt}</td>
+                                            <td className='p-2 m-2'>{dateFormat(item.createdAt)}</td>
 
                                         </tr>
                                     </>

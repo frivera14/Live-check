@@ -1,10 +1,10 @@
 const { Schema, model } = require('mongoose');
-const dateFormat = require('../utils/dateFormat')
+const dateFormat = require('../../client/src/utils/dateFormat')
 
 const GanadoSchema = new Schema({
     siniiiga: {
         type: String,
-        unique: true
+        unique: true,
     },
     etapa: {
         type: String, 
@@ -24,17 +24,12 @@ const GanadoSchema = new Schema({
     consignado: {
         type: String,
     },
-    observacion: {
+    status: {
         type: String,
-    },
-    comprado: {
-        type: Boolean,
-        default: true
+        default: 'Comprado'
     },
     createdAt: {
-        type: Date,
-        default: Date.now,
-        get: (createdVal) => dateFormat(createdVal)
+        type: Date
     }
 },
 {
@@ -53,18 +48,17 @@ const RanchoSchema = new Schema({
         trim: true,
         required: true
     },
+    ubicacion: {
+        type: String,
+    },
     ganado: [{
         type: Schema.Types.ObjectId,
-        ref: 'Ganado',
-        
+        ref: 'Ganado',  
     }],
-    alimento: {
-        type: Number,
-        required: true
-    },
-    diesel: {
-        type: Number,
-    },
+    gastos: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Transaction'
+    }],
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -83,13 +77,21 @@ const RanchoSchema = new Schema({
 RanchoSchema.virtual('currentCount').get(function () {
     let count = 0
     this.ganado.map((item) => {
-        if (item.comprado) {
-           return count++
+        if (item.status === 'Comprado') {
+            count++
         }
     })
     return count
-}).set(function (v) {
-    this.set({v})
+})
+
+RanchoSchema.virtual('ganadoMuerto').get(function () {
+    let count = 0
+    this.ganado.map((item) => {
+        if (item.status === 'Muerto') {
+             count++
+        }
+    })
+    return count
 })
 
 const Rancho = model('Rancho', RanchoSchema);

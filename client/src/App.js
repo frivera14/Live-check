@@ -1,11 +1,12 @@
 import './App.css';
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import OneRanch from './pages/indRancho'
 import UserPage from './pages/user-page'
 import Auth from '../src/utils/auth'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
+import Offcanvas from 'react-bootstrap/Offcanvas'
 import Button from 'react-bootstrap/Button'
 import AllCows from './pages/allGanado'
 import AllSalidas from './pages/allSalidas';
@@ -13,16 +14,20 @@ import AllSalidas from './pages/allSalidas';
 function App() {
   const [show, setShow] = useState(false);
 
-  const [showOther, setOther] = useState(false)
+  const profileId = useRef('')
 
-  const [profileId, setProfile] = useState('')
+  const [showOther, setOther] = useState(false);
 
-  const [loginForm, setLogin] = useState({ username: '', password: '' })
+  const [canvas, setCanvas] = useState(false);
 
-  const [signUpForm, setSignUp] = useState({ username: '', password: '' })
+  const [loginForm, setLogin] = useState({ username: '', password: '' });
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [signUpForm, setSignUp] = useState({ username: '', password: '' });
+
+  React.useEffect(() => {
+    profileId.current = Auth.loggedIn() ? Auth.getProfile().data._id : ''
+  }, [])
+
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -32,7 +37,7 @@ function App() {
   const handleSignUpChange = (e) => {
     const { name, value } = e.target
     setSignUp({ ...signUpForm, [name]: value })
-  }
+  };
 
   const createUser = (e) => {
     e.preventDefault();
@@ -40,15 +45,11 @@ function App() {
     fetch('/api/users', {
       method: 'post',
       body: JSON.stringify(signUpForm),
-      headers: { 'Content-Type' : 'application/json'}
+      headers: { 'Content-Type': 'application/json' }
     }).then(response => response.json())
-    .then((newUser) => {
-      Auth.login(newUser.token)
-    })
-  }
-
-  const getDataNew = () => {
-    setProfile(Auth.getProfile().data._id)
+      .then((newUser) => {
+        Auth.login(newUser.token)
+      })
   };
 
   const handleLogin = (e) => {
@@ -66,25 +67,39 @@ function App() {
     })
 
 
-  }
+  };
 
 
 
   return (
     <>
       <div className="App">
-        <h1 className='text-light fonter'> Live-Check</h1>
+        <div className='d-flex justify-content-center'>
+        <h1>Live-Check</h1>
+        <h1 className='m-1 text-danger inventada'>Ʊ</h1>
+
+        </div>
         {Auth.loggedIn() ? <div>
-          <button type='button' onClick={Auth.logout} className='btn bg-gradient text-light jober m-2'>Cerrar Sesion</button>
-          <a href={`/users/${profileId}`}>
-            <button type='button' onClick={getDataNew} className='btn bg-gradient text-light jober m-2'>Ver Perfil</button>
-          </a> </div> : <div>
-          <button onClick={handleShow} type='button' className='btn bg-gradient text-light jober'>Iniciar Sesion</button>
+          <button style={{color: '#B68D40', textDecoration: 'underline'}} type='button' onClick={Auth.logout} className='btn jober m-2'>Cerrar Sesion</button>
+
+          <button style={{color: '#B68D40', textDecoration: 'underline'}} type='button' onClick={() => setCanvas(true)} className='btn jober m-2'>Ver Ranchos</button>
+        </div> : <div>
+          <button style={{color: '#B68D40', textDecoration: 'underline'}} onClick={() => setShow(true)} type='button' className='btn jober'>Iniciar Sesion</button>
           <br></br>
-          <p className='m-2 text-light' onClick={() => setOther(true)} >Crear usuario nuevo</p>
-          </div>
-          }
-        <Modal show={show} onHide={handleClose}>
+          <p className='m-2 ' onClick={() => setOther(true)} >Crear usuario nuevo</p>
+        </div>
+        }
+
+        <Offcanvas style={{backgroundColor: '#292827'}} show={canvas} onHide={() => setCanvas(false)}>
+          <Offcanvas.Header closeButton closeVariant='white'>
+
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <UserPage profileId={profileId.current}></UserPage>
+          </Offcanvas.Body>
+        </Offcanvas>
+
+        <Modal show={show} onHide={() => setShow(false)}>
           <Modal.Header closeButton>
             Inicia Sesion:
           </Modal.Header>
@@ -138,9 +153,9 @@ function App() {
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label>Contraseña</Form.Label>
-                <Form.Control type='password' name='password' 
-                onChange={handleSignUpChange} 
-                value={signUpForm.password} />
+                <Form.Control type='password' name='password'
+                  onChange={handleSignUpChange}
+                  value={signUpForm.password} />
               </Form.Group>
             </Form>
           </Modal.Body>
@@ -157,7 +172,6 @@ function App() {
       <Router>
         <Switch>
           <Route exact path='/ranchos/:id' component={OneRanch}></Route>
-          <Route exact path='/users/:id' component={UserPage}></Route>
           <Route exact path='/ranchos/:id/ganado' component={AllCows}></Route>
           <Route exact path='/ranchos/:id/salidas' component={AllSalidas}></Route>
         </Switch>

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal'
 import Auth from '../utils/auth'
 import Salidas from './components/salidasComp';
+import { dateFormat } from '../utils/dateFormat'
 
 
 function IndRanch() {
 
     const url = window.location.pathname.split('/ranchos/')
+    const [showEdit, setEdit] = useState(false);
 
     const [view, setView] = useState([])
 
@@ -16,7 +18,7 @@ function IndRanch() {
 
     const [showLog, setLog] = useState(false);
 
-    const [entryRow, setEntry] = useState({ siniiiga: '', etapa: '', guia: '', remo: '', origen: '', propietario: '', consignado: '', observacion: '' })
+    const [entryRow, setEntry] = useState({ siniiiga: '', etapa: '', guia: '', remo: '', origen: '', propietario: '', consignado: '', createdAt: '' })
 
     const message = () => {
         return (
@@ -42,7 +44,7 @@ function IndRanch() {
                 setView(data)
 
             })
-    })
+    }, [showLog])
 
 
     const createGanado = () => {
@@ -55,7 +57,6 @@ function IndRanch() {
             .then(() => {
                 setLog(true)
                 entryRow.siniiiga = ''
-                console.log(entryRow)
             }
             )
     }
@@ -65,10 +66,12 @@ function IndRanch() {
             {Auth.getToken() && Auth.getProfile().data._id === view.owner ?
                 // Conditional for unauthorized users in others documents
                 <>
+                    <div className='d-flex justify-content-between'>
 
-                    <h1 className='m-4 text-light'>ENTRADA</h1>
-                    <h3 className='m-2 align-item-end text-light'>Cabezas de Ganado: {view.currentCount}</h3>
-                    <button onClick={() => setLgShow(true)} className='m-4 btn btn-primary bg-gradient'> + Agregar Compra</button>
+                        <h1 className='m-4 '>ENTRADAS</h1>
+                        <h3 className='m-4 '>Cabezas de Ganado: {view.currentCount}</h3>
+                    </div>
+                    <button onClick={() => setLgShow(true)} className='m-4 btn btn-outline-success bg-gradient'> + Agregar Compra</button>
                     {/* Modal for adding to the collection */}
                     <Modal
                         show={lgShow}
@@ -99,7 +102,7 @@ function IndRanch() {
                                             <th scope={'col'}>ORIGEN</th>
                                             <th scope={'col'}>PROPIETARIO</th>
                                             <th scope={'col'}>CONSIGNADO</th>
-                                            <th scope={'col'}>OBSERVACION</th>
+                                            <th scope={'col'}>FECHA DE COMPRA</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -111,7 +114,7 @@ function IndRanch() {
                                             <td><input onChange={handleChange} value={entryRow.origen} name='origen' style={{ maxWidth: '100px' }} type={'text'} /></td>
                                             <td><input onChange={handleChange} value={entryRow.propietario} name='propietario' style={{ maxWidth: '100px' }} type={'text'} /></td>
                                             <td><input onChange={handleChange} value={entryRow.consignado} name='consignado' style={{ maxWidth: '100px' }} type={'text'} /></td>
-                                            <td><input onChange={handleChange} value={entryRow.observacion} name='observacion' style={{ maxWidth: '100px' }} type={'text'} /></td>
+                                            <td><input onChange={handleChange} value={entryRow.createdAt} name='createdAt' style={{ maxWidth: '120px' }} type={'date'} /></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -121,8 +124,8 @@ function IndRanch() {
                     </Modal>
                     {/* Marked as in stock or 'true' displayed */}
                     <div className='m-4 p-2 d-flex justify-content-around'>
-                        <table className='table table-secondary table-striped'>
-                            <thead className='table-dark'>
+                        <table className='table table-light table-striped'>
+                            <thead className='table text-light' style={{ backgroundColor: '#122620'}}>
                                 <tr>
                                     <th scope={'col'}>SINIIIGA</th>
                                     <th scope={'col'}>ETAPA REP.</th>
@@ -131,7 +134,6 @@ function IndRanch() {
                                     <th scope={'col'}>ORIGEN</th>
                                     <th scope={'col'}>PROPIETARIO</th>
                                     <th scope={'col'}>CONSIGNADO</th>
-                                    <th scope={'col'}>OBSERVACION</th>
                                     <th scope={'col'}>FECHA DE COMPRA</th>
                                 </tr>
                             </thead>
@@ -139,7 +141,7 @@ function IndRanch() {
 
 
                                 {vacas.slice(0, 9).map((item) => {
-                                    return item.comprado ?
+                                    return item.status === 'Comprado' ?
                                         <>
                                             <tr>
 
@@ -150,8 +152,7 @@ function IndRanch() {
                                                 <td className='p-2 m-2'>{item.origen}</td>
                                                 <td className='p-2 m-2'>{item.propietario}</td>
                                                 <td className='p-2 m-2'>{item.consignado}</td>
-                                                <td className='p-2 m-2'>{item.observacion}</td>
-                                                <td className='p-2 m-2'>{item.createdAt}</td>
+                                                <td className='p-2 m-2'>{dateFormat(item.createdAt)}</td>
 
                                             </tr>
                                         </>
@@ -161,11 +162,13 @@ function IndRanch() {
                             </tbody>
                         </table>
                     </div>
-                    <a className='d-flex justify-content-center text-light h5' href={`/ranchos/${view._id}/ganado`}>Ver mas</a>
+                    <a className='d-flex justify-content-center h5' href={`/ranchos/${view._id}/ganado`}>Ver mas</a>
 
                     {/* Start Salida Component here */}
-                   <Salidas vacas={vacas.reverse()}></Salidas>
-                   <a className='d-flex justify-content-center text-light h5 mb-4' href={`/ranchos/${view._id}/salidas`}>Ver mas</a>
+                    <h1 className='m-4 '>SALIDA</h1>
+                    <button type='button' className='m-4 btn btn-outline-success' onClick={() => setEdit(true)}> + Agregar Salida</button>
+                    <Salidas edit={showEdit} ranchoId={view._id} vacas={vacas} closer={() => setEdit(false)} message={() => message()} logger={() => setLog(true)} offer={() => setLog(false)}></Salidas>
+                    <a className='d-flex justify-content-center h5 mb-4' href={`/ranchos/${view._id}/salidas`}>Ver mas</a>
 
                 </>
                 : <h3 className='m-4 text-light'> No tienes accesso a estos datos </h3>
