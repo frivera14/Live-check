@@ -1,9 +1,8 @@
 const { Schema, model } = require('mongoose');
-const dateFormat = require('../../client/src/utils/dateFormat')
 
 const GanadoSchema = new Schema({
     siniiiga: {
-        type: String,
+        type: Number,
         unique: true,
     },
     etapa: {
@@ -30,6 +29,9 @@ const GanadoSchema = new Schema({
     },
     createdAt: {
         type: Date
+    },
+    otros: {
+        type: String
     }
 },
 {

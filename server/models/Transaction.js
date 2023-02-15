@@ -1,4 +1,4 @@
-const {Schema, Model, Types, model} = require('mongoose');
+const {Schema, model} = require('mongoose');
 
 
 const TransactionSchema = new Schema({
@@ -15,6 +15,12 @@ const TransactionSchema = new Schema({
         type: String
     }
 
+}, {
+    toJSON: {
+        virtuals: true,
+        getters: true
+    },
+    id: false
 });
 
 const Transaction = model('Transaction', TransactionSchema);

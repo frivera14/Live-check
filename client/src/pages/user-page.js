@@ -22,7 +22,7 @@ function UserPage({ profileId }) {
         fetch(apiUrl)
             .then(res => res.json())
             .then((data) => setView(data))
-    }, [apiUrl])
+    }, [show])
 
     const makeRanch = (e) => {
         e.preventDefault();
@@ -32,7 +32,10 @@ function UserPage({ profileId }) {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(res => res.json())
-            .then(() => setShow(false))
+            .then(() => {
+                formData.ranchName = ''
+                formData.ubicacion = ''
+                setShow(false)})
     }
 
     return (

@@ -10,6 +10,8 @@ import Offcanvas from 'react-bootstrap/Offcanvas'
 import Button from 'react-bootstrap/Button'
 import AllCows from './pages/allGanado'
 import AllSalidas from './pages/allSalidas';
+import GanadoMuerto from './pages/GanadoMuerto';
+import Gastos from './pages/gastos';
 
 function App() {
   const [show, setShow] = useState(false);
@@ -75,18 +77,17 @@ function App() {
     <>
       <div className="App">
         <div className='d-flex justify-content-center'>
-        <h1>Live-Check</h1>
-        <h1 className='m-1 text-danger inventada'>Ʊ</h1>
+        <h1 className='m-1'>🐄🚜</h1>
 
         </div>
-        {Auth.loggedIn() ? <div>
-          <button style={{color: '#B68D40', textDecoration: 'underline'}} type='button' onClick={Auth.logout} className='btn jober m-2'>Cerrar Sesion</button>
+        {Auth.loggedIn() ? <div className='d-flex justify-content-center'>
+          <button type='button' onClick={Auth.logout} className='btn sandBoton m-2'>Cerrar Sesion</button>
 
-          <button style={{color: '#B68D40', textDecoration: 'underline'}} type='button' onClick={() => setCanvas(true)} className='btn jober m-2'>Ver Ranchos</button>
-        </div> : <div>
-          <button style={{color: '#B68D40', textDecoration: 'underline'}} onClick={() => setShow(true)} type='button' className='btn jober'>Iniciar Sesion</button>
+          <button type='button' onClick={() => setCanvas(true)} className='btn sandBoton m-2'>Ver Ranchos</button>
+        </div> : <div className='d-flex justify-content-center'>
+          <button onClick={() => setShow(true)} type='button' className='btn sandBoton m-2'>Iniciar Sesion</button>
           <br></br>
-          <p className='m-2 ' onClick={() => setOther(true)} >Crear usuario nuevo</p>
+          <button onClick={()=> setOther(true)} type='button' className='btn sandBoton m-2'>Crear Usuario Nuevo</button>
         </div>
         }
 
@@ -174,6 +175,8 @@ function App() {
           <Route exact path='/ranchos/:id' component={OneRanch}></Route>
           <Route exact path='/ranchos/:id/ganado' component={AllCows}></Route>
           <Route exact path='/ranchos/:id/salidas' component={AllSalidas}></Route>
+          <Route exact path='/ranchos/:id/muertos' component={GanadoMuerto}></Route>
+          <Route exact path='/ranchos/:id/gastos' component={Gastos}></Route>
         </Switch>
       </Router>
     </>

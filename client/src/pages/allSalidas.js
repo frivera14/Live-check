@@ -22,9 +22,43 @@ function AllSalidas() {
             })
     }, []);
 
+    const compareDates = (a , b) => {
+        const dateA = a.createdAt;
+        const dateB = b.createdAt;
+
+        if (dateA < dateB) {
+            return -1
+        }
+
+        if (dateA > dateB) {
+            return 1
+        }
+
+        return 0
+    }
+
     const handleSwitch = () => {
-        buttonValue === '↓' ? setValue('↑') : setValue('↓')
-        return viewCows.reverse()
+        if (buttonValue === '↓') {
+            
+            viewCows.sort(compareDates)
+            setValue('↑') 
+        } else {
+            viewCows.sort((a, b) => {
+                const dateA = a.createdAt;
+                const dateB = b.createdAt;
+
+                if (dateB < dateA) {
+                    return -1
+                }
+                if (dateB > dateA) {
+                    return 1
+                }
+
+                return 0
+            })
+            setValue('↓')
+        }
+        return 
     }
 
 

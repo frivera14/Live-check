@@ -12,20 +12,53 @@ function AllCows() {
 
     const [buttonValue, setValue] = useState('↓')
 
+    const compareDates = (a , b) => {
+        const dateA = a.createdAt;
+        const dateB = b.createdAt;
+
+        if (dateA < dateB) {
+            return -1
+        }
+
+        if (dateA > dateB) {
+            return 1
+        }
+
+        return 0
+    }
+
 
     useEffect(() => {
         fetch(`/api/ranchos/${ranchId[2]}`)
             .then(res => res.json())
             .then((data) => {
-                const cows = data.ganado.reverse()
+                const cows = data.ganado
                 setRanch(data)
                 return  setView(cows)
             })
     }, []);
 
     const handleSwitch = () => {
-        buttonValue === '↓' ? setValue('↑') : setValue('↓')
-        return viewCows.reverse()
+        if (buttonValue === '↓') {
+            
+            setValue('↑') 
+            viewCows.sort(compareDates)
+        } else {
+            viewCows.sort((a, b) => {
+                const dateA = a.createdAt
+                const dateB = b.createdAt
+                if (dateB < dateA) {
+                    return -1
+                }
+                if (dateB > dateA) {
+                    return 1
+                }
+                return 0
+            })
+            setValue('↓')
+        }
+        
+        return 
     }
 
     return (

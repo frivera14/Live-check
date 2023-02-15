@@ -1,84 +1,162 @@
 import React, { useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import ListGroup from 'react-bootstrap/ListGroup'
-import SalidaStat from './salidaStat'
 import EditSalida from './editSalida';
 import { dateFormat } from '../../utils/dateFormat';
 
 
-function Salidas({ edit, ranchoId, vacas, closer, message, logger, offer }) {
+function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
 
-    const [newField, setNewField] = useState('');
+    const [elboton, setBoton] = useState('↓')
+
+    const [otroBoton, setOtro] = useState('↓')
 
 
-    const changeType = (e) => {
-        e.preventDefault();
-        if (newField === e.target.name) {
-            return setNewField('')
+    const compareSin = (a, b) => {
+        const sinA = a.siniiiga;
+        const sinB = b.siniiiga;
+
+        if (sinA < sinB) {
+            return -1
         }
-      return setNewField(e.target.name)
+        if (sinA > sinB) {
+            return 1
+        }
+
+        return 0
+    }
+
+    const compareDate = (a, b) => {
+        const sinA = a.createdAt;
+        const sinB = b.createdAt;
+
+        if (sinA < sinB) {
+            return -1
+        }
+        if (sinA > sinB) {
+            return 1
+        }
+
+        return 0
+    }
+
+    const invertDate = (a, b) => {
+        const sinA = a.createdAt;
+        const sinB = b.createdAt;
+
+        if (sinB < sinA) {
+            return -1
+        }
+        if (sinB > sinA) {
+            return 1
+        }
+
+        return 0
+    }
+    
+    const inviertela = (a, b) => {
+        const sinA = a.siniiiga;
+        const sinB = b.siniiiga;
+
+        if (sinB < sinA) {
+            return -1
+        }
+        if (sinB > sinA) {
+            return 1
+        }
+
+        return 0
+    }
+
+
+
+    const toggleDate = () => {
+        if (otroBoton === '↓') {
+            vacas.sort(compareDate)
+            setOtro('↑');
+        } else {
+            vacas.sort(invertDate)
+            setOtro('↓')
+        }
+
+    }
+
+    const toggleBoton = () => {
+
+        if (elboton === '↓') {
+            vacas.sort(compareSin)
+            setBoton('↑')
+        } else {
+            vacas.sort(inviertela)
+            setBoton('↓')
+        }
     }
 
 
 
     return (<>
 
-        <div className='m-4 p-2 d-flex justify-content-around'>
+        <div className='m-2 p-2 d-flex flex-column justify-content-around'>
 
-            <table className='table table-light table-striped'>
-                <thead className='table text-light' style={{ backgroundColor: '#122620'}}>
+            <table className='flex-column table table-light table-striped'>
+                <thead className='table text-light' style={{ backgroundColor: '#122620' }}>
                     <tr>
                         <th scope={'col'}>SINIIIGA</th>
                         <th scope={'col'}>ETAPA REP.</th>
                         <th scope={'col'}>GUIA</th>
                         <th scope={'col'}>REMO</th>
                         <th scope={'col'}>DESTINO</th>
-                        <th scope={'col'}>CONSIGNADO</th>
                         <th scope={'col'}>PROPIETARIO</th>
+                        <th scope={'col'}>CONSIGNADO</th>
                         <th scope={'col'}>FECHA DE VENTA</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     {/* Marked as sold or 'false display */}
-                    {vacas.slice(0 , 9).map((item) => {
+                    {vacas.slice(0, 9).map((item) => {
                         return item.status === 'Vendido' ? <tr>
 
-                        <td className='p-2 m-2'>{item.siniiiga}</td>
-                        <td className='p-2 m-2'>{item.etapa}</td>
-                        <td className='p-2 m-2'>{item.guia}</td>
-                        <td className='p-2 m-2'>{item.remo}</td>
-                        <td className='p-2 m-2'>{item.origen}</td>
-                        <td className='p-2 m-2'>{item.consignado}</td>
-                        <td className='p-2 m-2'>{item.propietario}</td>
-                        <td className='p-2 m-2'>{dateFormat(item.createdAt)}</td>
+                            <td className='p-2 m-2'>{item.siniiiga}</td>
+                            <td className='p-2 m-2'>{item.etapa}</td>
+                            <td className='p-2 m-2'>{item.guia}</td>
+                            <td className='p-2 m-2'>{item.remo}</td>
+                            <td className='p-2 m-2'>{item.origen}</td>
+                            <td className='p-2 m-2'>{item.consignado}</td>
+                            <td className='p-2 m-2'>{item.propietario}</td>
+                            <td className='p-2 m-2'>{dateFormat(item.createdAt)}</td>
 
-                    </tr> : <></>
+                        </tr> : <></>
                     })}
                 </tbody>
             </table>
             {/* Modal for Salidas/Editing existing Ganado */}
-            <Modal show={edit} onHide={closer} fullscreen={true}>
+            <Modal show={edit} onHide={functionObject.editFalse} fullscreen={true}>
                 <Modal.Header closeButton>
                     <Modal.Title>
                         Registrar Salidas:
-                        </Modal.Title>
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                        {showLog ? functionObject.message() : <></>}
                     <ListGroup>
-                        {message()}
                         <table className='table table-striped '>
                             <thead className='table-dark'>
                                 <tr>
-                                    <th scope={'col'}>Editar</th>
-                                    <th scope={'col'}>SINIIIGA</th>
+
+                                    
+
+                                    {/* <th scope={'col'}>Editar</th> */}
+                                    <th scope={'col'}>SINIIIGA<button type='button' style={{maxHeight: '50px'}} className='btn btn-dark p-1' onClick={() => toggleBoton()}>{elboton}</button></th>
                                     <th scope={'col'}>ETAPA REP.</th>
                                     <th scope={'col'}>GUIA</th>
                                     <th scope={'col'}>REMO</th>
                                     <th scope={'col'}>DESTINO</th>
                                     <th scope={'col'}>CONSIGNADO</th>
                                     <th scope={'col'}>PROPIETARIO</th>
+                                    <th scope={'col'}>FECHA DE COMPRA<button type='button' style={{maxHeight: '50px', marginLeft: '5px'}} className='btn btn-dark p-1' onClick={() => toggleDate()}>{otroBoton}</button></th>
                                     <th scope={'col'}>FECHA DE VENTA</th>
+                                    
                                 </tr>
 
                             </thead>
@@ -87,17 +165,7 @@ function Salidas({ edit, ranchoId, vacas, closer, message, logger, offer }) {
                                 {vacas.map((item) => {
                                     return item.status === 'Comprado' ? <>
                                         <tr className='position-relative'>
-                                            <ListGroup.Item action name={item._id} variant='warning' onClick={changeType}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
-                                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
-                                                </svg>
-                                            </ListGroup.Item>
-                                            {newField === item._id ? <>
-                                            <EditSalida ranchoId={ranchoId} item={item} logger={logger} offer={offer}></EditSalida>
-                                            </> : <>
-                                            <SalidaStat item={item}></SalidaStat>
-                                            </>}
-
+                                                <EditSalida ranchoId={ranchoId} item={item} functionObject={functionObject}></EditSalida>
                                         </tr>
                                     </> : null
                                 })}

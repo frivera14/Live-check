@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+
 }
 
 .App-logo {
@@ -9,6 +9,18 @@
 
 .jober:hover{
   border-color: #B68D40;  
+}
+
+.sandBoton {
+  border-color: #D6AD60;
+  background-color: none;
+  color: #D6AD60
+
+}
+
+.sandBoton:hover{
+  background-color: #D6AD60;
+  color: white;
 }
 
 .inventada {

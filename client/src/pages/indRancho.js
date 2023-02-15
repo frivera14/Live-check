@@ -8,6 +8,7 @@ import { dateFormat } from '../utils/dateFormat'
 function IndRanch() {
 
     const url = window.location.pathname.split('/ranchos/')
+
     const [showEdit, setEdit] = useState(false);
 
     const [view, setView] = useState([])
@@ -28,9 +29,16 @@ function IndRanch() {
         )
     }
 
+    const functionObject = {
+        editFalse: () => setEdit(false),
+        message: () => message(),
+        logTrue: () => setLog(true),
+        logFalse: () => setLog(false)
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setLog(false)
+        functionObject.logFalse()
         setEntry({ ...entryRow, [name]: value })
     }
 
@@ -55,7 +63,7 @@ function IndRanch() {
             headers: { 'Content-Type': 'application/json' }
         }).then(res => res.json())
             .then(() => {
-                setLog(true)
+                functionObject.logTrue();
                 entryRow.siniiiga = ''
             }
             )
@@ -68,10 +76,14 @@ function IndRanch() {
                 <>
                     <div className='d-flex justify-content-between'>
 
-                        <h1 className='m-4 '>ENTRADAS</h1>
-                        <h3 className='m-4 '>Cabezas de Ganado: {view.currentCount}</h3>
+                        <h3 className='m-2'>{view.ranchName}</h3>
+                        <h3 className='m-2 '>Cabezas de Ganado: {view.currentCount}</h3>
                     </div>
-                    <button onClick={() => setLgShow(true)} className='m-4 btn btn-outline-success bg-gradient'> + Agregar Compra</button>
+                    <h2 className='m-2 '>Entrada</h2>
+                    <div className='d-flex'>
+                    <button onClick={() => setLgShow(true)} className='m-2 btn btn-outline-success btn-lg'> + Agregar Compra</button>
+                    <button onClick={() => window.location.assign(`/ranchos/${url[1]}/gastos`)} className='sandBoton btn m-2 btn-lg'>Control de Gastos</button>
+                    </div>
                     {/* Modal for adding to the collection */}
                     <Modal
                         show={lgShow}
@@ -86,7 +98,7 @@ function IndRanch() {
                         </Modal.Header>
                         <div className='p-2 m-2'>
 
-                            {message()}
+                            {functionObject.message()}
                         </div>
 
                         <Modal.Body>
@@ -123,9 +135,9 @@ function IndRanch() {
                         </Modal.Body>
                     </Modal>
                     {/* Marked as in stock or 'true' displayed */}
-                    <div className='m-4 p-2 d-flex justify-content-around'>
-                        <table className='table table-light table-striped'>
-                            <thead className='table text-light' style={{ backgroundColor: '#122620'}}>
+                    <div className='m-2 p-2 d-flex flex-column justify-content-around'>
+                        <table className='table flex-column table-light table-striped'>
+                            <thead className='table text-light' style={{ backgroundColor: '#122620' }}>
                                 <tr>
                                     <th scope={'col'}>SINIIIGA</th>
                                     <th scope={'col'}>ETAPA REP.</th>
@@ -165,13 +177,16 @@ function IndRanch() {
                     <a className='d-flex justify-content-center h5' href={`/ranchos/${view._id}/ganado`}>Ver mas</a>
 
                     {/* Start Salida Component here */}
-                    <h1 className='m-4 '>SALIDA</h1>
-                    <button type='button' className='m-4 btn btn-outline-success' onClick={() => setEdit(true)}> + Agregar Salida</button>
-                    <Salidas edit={showEdit} ranchoId={view._id} vacas={vacas} closer={() => setEdit(false)} message={() => message()} logger={() => setLog(true)} offer={() => setLog(false)}></Salidas>
+                    <h1 className='m-2 '>Salida</h1>
+                    <div className='d-flex'>
+                    <button type='button' className='m-2 btn btn-outline-danger btn-lg' onClick={() => setEdit(true)}> + Agregar Salida</button>
+                    <a style={{textDecoration: 'none'}} href={`/ranchos/${url[1]}/muertos`}><button type='button' className='btn btn-outline-dark m-2 btn-lg'>Ganado Muerto: {view.ganadoMuerto}</button></a>
+                    </div>
+                    <Salidas edit={showEdit} ranchoId={view._id} vacas={vacas} functionObject={functionObject} showLog={showLog}></Salidas>
                     <a className='d-flex justify-content-center h5 mb-4' href={`/ranchos/${view._id}/salidas`}>Ver mas</a>
 
                 </>
-                : <h3 className='m-4 text-light'> No tienes accesso a estos datos </h3>
+                : <h3 className='m-4'> No tienes accesso a estos datos </h3>
             }
         </>
     )
