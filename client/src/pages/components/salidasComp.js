@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal'
 import ListGroup from 'react-bootstrap/ListGroup'
 import EditSalida from './editSalida';
 import { dateFormat } from '../../utils/dateFormat';
+import { orderDates, returnAscending, returnDescending, reverseDates } from '../../utils/helpers';
 
 
 function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
@@ -11,71 +12,12 @@ function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
 
     const [otroBoton, setOtro] = useState('↓')
 
-
-    const compareSin = (a, b) => {
-        const sinA = a.siniiiga;
-        const sinB = b.siniiiga;
-
-        if (sinA < sinB) {
-            return -1
-        }
-        if (sinA > sinB) {
-            return 1
-        }
-
-        return 0
-    }
-
-    const compareDate = (a, b) => {
-        const sinA = a.createdAt;
-        const sinB = b.createdAt;
-
-        if (sinA < sinB) {
-            return -1
-        }
-        if (sinA > sinB) {
-            return 1
-        }
-
-        return 0
-    }
-
-    const invertDate = (a, b) => {
-        const sinA = a.createdAt;
-        const sinB = b.createdAt;
-
-        if (sinB < sinA) {
-            return -1
-        }
-        if (sinB > sinA) {
-            return 1
-        }
-
-        return 0
-    }
-    
-    const inviertela = (a, b) => {
-        const sinA = a.siniiiga;
-        const sinB = b.siniiiga;
-
-        if (sinB < sinA) {
-            return -1
-        }
-        if (sinB > sinA) {
-            return 1
-        }
-
-        return 0
-    }
-
-
-
     const toggleDate = () => {
         if (otroBoton === '↓') {
-            vacas.sort(compareDate)
+            vacas.sort(orderDates)
             setOtro('↑');
         } else {
-            vacas.sort(invertDate)
+            vacas.sort(reverseDates)
             setOtro('↓')
         }
 
@@ -84,10 +26,10 @@ function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
     const toggleBoton = () => {
 
         if (elboton === '↓') {
-            vacas.sort(compareSin)
+            vacas.sort(returnAscending)
             setBoton('↑')
         } else {
-            vacas.sort(inviertela)
+            vacas.sort(returnDescending)
             setBoton('↓')
         }
     }
@@ -146,7 +88,6 @@ function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
 
                                     
 
-                                    {/* <th scope={'col'}>Editar</th> */}
                                     <th scope={'col'}>SINIIIGA<button type='button' style={{maxHeight: '50px'}} className='btn btn-dark p-1' onClick={() => toggleBoton()}>{elboton}</button></th>
                                     <th scope={'col'}>ETAPA REP.</th>
                                     <th scope={'col'}>GUIA</th>

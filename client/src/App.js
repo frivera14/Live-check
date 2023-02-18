@@ -81,9 +81,8 @@ function App() {
 
         </div>
         {Auth.loggedIn() ? <div className='d-flex justify-content-center'>
+          <button type='button' onClick={() => setCanvas(true)} className='btn sandBoton m-2'>Lista de Ranchos</button>
           <button type='button' onClick={Auth.logout} className='btn sandBoton m-2'>Cerrar Sesion</button>
-
-          <button type='button' onClick={() => setCanvas(true)} className='btn sandBoton m-2'>Ver Ranchos</button>
         </div> : <div className='d-flex justify-content-center'>
           <button onClick={() => setShow(true)} type='button' className='btn sandBoton m-2'>Iniciar Sesion</button>
           <br></br>

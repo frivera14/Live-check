@@ -65,7 +65,7 @@ function GanadoMuerto() {
                                                 <td className='p-2 m-2'>{item.etapa}</td>
                                                 <td className='p-2 m-2'>{dateFormat(item.createdAt)}</td>
                                                 <td className='p-2 m-2'>{item.otros}</td>
-                                                <td className='p-2 m-2'>{item.propietario}</td>
+                                                <td className='p-2 m-2'>{item.consignado}</td>
 
                                             </tr>
                                         </>

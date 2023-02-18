@@ -94,7 +94,8 @@ RanchoSchema.virtual('ganadoMuerto').get(function () {
         }
     })
     return count
-})
+});
+
 
 const Rancho = model('Rancho', RanchoSchema);
 

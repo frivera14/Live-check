@@ -86,7 +86,7 @@ function IndRanch() {
                     </div>
                     {/* Modal for adding to the collection */}
                     <Modal
-                        show={lgShow}
+                        show={lgShow}   
                         onHide={() => setLgShow(false)}
                         fullscreen={true}
                     >
@@ -135,6 +135,7 @@ function IndRanch() {
                         </Modal.Body>
                     </Modal>
                     {/* Marked as in stock or 'true' displayed */}
+
                     <div className='m-2 p-2 d-flex flex-column justify-content-around'>
                         <table className='table flex-column table-light table-striped'>
                             <thead className='table text-light' style={{ backgroundColor: '#122620' }}>
@@ -154,7 +155,7 @@ function IndRanch() {
 
                                 {vacas.slice(0, 9).map((item) => {
                                     return item.status === 'Comprado' ?
-                                        <>
+                                    <>
                                             <tr>
 
                                                 <td className='p-2 m-2'>{item.siniiiga}</td>

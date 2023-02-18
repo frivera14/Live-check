@@ -30,12 +30,8 @@ const ranchoController = {
     },
     
     deleteGanado({params}, res) {
-        Rancho.findByIdAndUpdate({ _id: params.ranchoId}, {$pull: { ganado: { ganadoId: params.ganadoId}}}, {new: true, runValidators: true})
+        Ganado.findOneAndDelete({ _id: params.ganadoId}, {new: true})
         .then(data => res.json(data))
-        .then((update) => {
-            return Rancho.findByIdAndUpdate({ _id: params.ranchoId}, {$push: {salidas: update}}, {new: true, runValidators: true})
-        })
-        .then(newData => res.json(data))
         .catch(err => res.status(500).json(err))
     },
     
@@ -43,7 +39,7 @@ const ranchoController = {
     getRanchos(req, res) {
         Rancho.find({})
         .populate({ path: 'ranchName'})
-        .populate({ path: 'ganado' }, {$sort: {_id: -1}})
+        .populate({ path: 'ganado' })
         .populate({ path: 'owner'})
         .select('-__v')
         .then(data => {
@@ -59,6 +55,7 @@ const ranchoController = {
     getSingleRancho({params}, res) {
         Rancho.findOne({ _id: params.id})
         .populate({ path: 'ganado'})
+        .populate({ path: 'gastos'})
         .then(data => res.json(data))
         .catch(err => res.status(500).json(err))
     }, 

@@ -1,4 +1,5 @@
 const {Schema, model} = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 
 
 const TransactionSchema = new Schema({
@@ -7,12 +8,13 @@ const TransactionSchema = new Schema({
         trim: true,
         required: true
     },
-    amount: {
+    cantidad: {
         type: Number,
         required: true
     },
     fecha: {
-        type: String
+        type: Date,
+        required: true
     }
 
 }, {
@@ -23,7 +25,8 @@ const TransactionSchema = new Schema({
     id: false
 });
 
+
 const Transaction = model('Transaction', TransactionSchema);
 
-module.exports = Transaction
+module.exports = {Transaction};
 
