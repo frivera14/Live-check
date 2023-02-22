@@ -34,23 +34,6 @@ const ranchoController = {
         .then(data => res.json(data))
         .catch(err => res.status(500).json(err))
     },
-    
-
-    getRanchos(req, res) {
-        Rancho.find({})
-        .populate({ path: 'ranchName'})
-        .populate({ path: 'ganado' })
-        .populate({ path: 'owner'})
-        .select('-__v')
-        .then(data => {
-            if (!data) {
-                res.status(404).json({ message: 'No user found'})
-            }
-            res.status(200).json(data)
-        })
-        .catch(err => res.json(err))
-        
-    },  
 
     getSingleRancho({params}, res) {
         Rancho.findOne({ _id: params.id})

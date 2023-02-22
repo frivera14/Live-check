@@ -1,7 +1,7 @@
 import React from 'react';
 
 function EditStock({ item, ranchId }) {
-    const [formState, setForm] = React.useState({ etapa: '', guia: '', remo: '', origen: '', propietario: '', consignado: '', createdAt: '', _id: item._id })
+    const [formState, setForm] = React.useState(item)
 
     const [enabler, setEnabler] = React.useState(false)
     

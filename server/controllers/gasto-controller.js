@@ -17,8 +17,8 @@ const gastoController = {
         .catch(err => res.status(500).json(err))
     },
 
-    deleteTransaction({body}, res) {
-        Transaction.findOneAndDelete({_id: body._id})
+    deleteTransaction({params}, res) {
+        Transaction.findOneAndDelete({_id: params.id}, {new: true})
         .then(data => res.json(data))
         .catch(err => res.status(500).json(err))
     }

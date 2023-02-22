@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
 const {
-    getRanchos,
     getSingleRancho,
     deleteRancho,
     createGanado,
@@ -14,8 +13,6 @@ const {
     createTransaction, updateTransaction, deleteTransaction
 } = require('../../controllers/gasto-controller')
 
-router.route('/').get(getRanchos);
-
 
 router.route('/:id')
     .get(getSingleRancho)
@@ -25,10 +22,11 @@ router.route('/:id')
 
 router.route('/:id/gastos')
     .post(createTransaction)
-    .put(updateTransaction)
-    .delete(deleteTransaction)
+    .put(updateTransaction);
 
-router.route('/:ranchoId/ganado/:ganadoId').put(deleteGanado);
+router.route('/:ranchoId/gastos/:id').delete(deleteTransaction)
+
+router.route('/:ranchoId/ganado/:ganadoId').delete(deleteGanado);
 
 
 

@@ -79,7 +79,7 @@ function IndRanch() {
                         <h3 className='m-2'>{view.ranchName}</h3>
                         <h3 className='m-2 '>Cabezas de Ganado: {view.currentCount}</h3>
                     </div>
-                    <h2 className='m-2 '>Entrada</h2>
+                    <h2 className='m-2 '>Entrada de Ganado</h2>
                     <div className='d-flex'>
                     <button onClick={() => setLgShow(true)} className='m-2 btn btn-outline-success btn-lg'> + Agregar Compra</button>
                     <button onClick={() => window.location.assign(`/ranchos/${url[1]}/gastos`)} className='sandBoton btn m-2 btn-lg'>Control de Gastos</button>

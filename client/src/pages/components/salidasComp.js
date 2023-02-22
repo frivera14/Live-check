@@ -88,7 +88,12 @@ function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
 
                                     
 
-                                    <th scope={'col'}>SINIIIGA<button type='button' style={{maxHeight: '50px'}} className='btn btn-dark p-1' onClick={() => toggleBoton()}>{elboton}</button></th>
+                                    <th scope={'col'}>
+                                        <div className='d-flex flex-row'>
+                                        SINIIIGA
+                                        <button type='button' style={{maxHeight: '50px', marginLeft: '2px'}} className='btn btn-dark p-1' onClick={() => toggleBoton()}>{elboton}</button>
+                                        </div>
+                                        </th>
                                     <th scope={'col'}>ETAPA REP.</th>
                                     <th scope={'col'}>GUIA</th>
                                     <th scope={'col'}>REMO</th>

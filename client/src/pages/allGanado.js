@@ -34,6 +34,17 @@ function AllCows() {
         }
     }
 
+    
+    const handleSwitch = () => {
+        if (buttonValue === '↓') {
+            setValue('↑')
+            viewCows.sort(orderDates)
+        } else {
+            viewCows.sort(reverseDates)
+            setValue('↓')
+        }
+    };
+    
     useEffect(() => {
         fetch(`/api/ranchos/${ranchId[2]}`)
             .then(res => res.json())
@@ -44,20 +55,18 @@ function AllCows() {
             })
     }, [editAll || deleteBtn]);
 
-    const handleSwitch = () => {
-        if (buttonValue === '↓') {
-            setValue('↑')
-            viewCows.sort(orderDates)
+    const deleteConfirm = (e) => {
+        if (window.confirm('Estas seguro/a que quieres borrar este dato?')){
+            deleteVaca(e.target.name)
         } else {
-            viewCows.sort(reverseDates)
-            setValue('↓')
+            setDelete(false)
         }
-    };
+    }
 
     const deleteVaca = (e) => {
 
-        fetch(`/api/ranchos/${ranchId[2]}/ganado/${e.target.name}`, {
-            method: 'put',
+        fetch(`/api/ranchos/${ranchId[2]}/ganado/${e}`, {
+            method: 'delete',
             headers: {'Content-Type': 'application/json'}
         })
         .then(res => res.json())
@@ -70,8 +79,7 @@ function AllCows() {
         <>
             {Auth.getToken() && Auth.getProfile().data._id === ranchData.owner ? <>
                 <div className='d-flex justify-content-between'>
-
-                <button className='btn btn-warning m-4 text-light' onClick={() => editHandler()}>Editar Ganado</button>
+                <button className='btn btn-warning m-4 text-light' onClick={() => editHandler()}> {editAll ? <>Listo!</> : <>Editar Ganado</>}</button>
                 <button className='btn btn-danger m-4 text-light' onClick={() => deleteHandler()}>Borrar Ganado</button>
                 </div>
                 <div className='m-4 p-2 d-flex justify-content-around'>
@@ -109,7 +117,7 @@ function AllCows() {
                                             <td className='p-2 m-2'>{item.propietario}</td>
                                             <td className='p-2 m-2'>{item.consignado}</td>
                                             <td className='p-2 m-2'>{dateFormat(item.createdAt)}</td>
-                                            {deleteBtn ? <button type='button' name={item._id} style={{borderRadius: '20px', maxHeight: '30px', alignItems: 'center'}} onClick={deleteVaca} className='btn d-flex btn-sm btn-danger bg-danger text-light position-absolute top-50 start-100 translate-middle'>X</button>: <></>}
+                                            {deleteBtn ? <button type='button' name={item._id} style={{borderRadius: '20px', maxHeight: '30px', alignItems: 'center'}} onClick={deleteConfirm} className='btn d-flex btn-sm btn-danger bg-danger text-light position-absolute top-50 start-100 translate-middle'>X</button>: <></>}
 
                                         </tr>
                                         
