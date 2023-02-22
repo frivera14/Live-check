@@ -5,7 +5,6 @@ import EditSalida from './editSalida';
 import { dateFormat } from '../../utils/dateFormat';
 import { orderDates, returnAscending, returnDescending, reverseDates } from '../../utils/helpers';
 
-
 function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
 
     const [elboton, setBoton] = useState('↓')
@@ -33,8 +32,6 @@ function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
             setBoton('↓')
         }
     }
-
-
 
     return (<>
 
@@ -67,7 +64,6 @@ function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
                             <td className='p-2 m-2'>{item.consignado}</td>
                             <td className='p-2 m-2'>{item.propietario}</td>
                             <td className='p-2 m-2'>{dateFormat(item.createdAt)}</td>
-
                         </tr> : <></>
                     })}
                 </tbody>
@@ -80,50 +76,41 @@ function Salidas({ edit, ranchoId, vacas, functionObject, showLog }) {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                        {showLog ? functionObject.message() : <></>}
+                    {showLog ? functionObject.message() : <></>}
                     <ListGroup>
                         <table className='table table-striped '>
                             <thead className='table-dark'>
                                 <tr>
-
-                                    
-
                                     <th scope={'col'}>
                                         <div className='d-flex flex-row'>
-                                        SINIIIGA
-                                        <button type='button' style={{maxHeight: '50px', marginLeft: '2px'}} className='btn btn-dark p-1' onClick={() => toggleBoton()}>{elboton}</button>
+                                            SINIIIGA
+                                            <button type='button' style={{ maxHeight: '50px', marginLeft: '2px' }} className='btn btn-dark p-1' onClick={() => toggleBoton()}>{elboton}</button>
                                         </div>
-                                        </th>
+                                    </th>
                                     <th scope={'col'}>ETAPA REP.</th>
                                     <th scope={'col'}>GUIA</th>
                                     <th scope={'col'}>REMO</th>
                                     <th scope={'col'}>DESTINO</th>
                                     <th scope={'col'}>CONSIGNADO</th>
                                     <th scope={'col'}>PROPIETARIO</th>
-                                    <th scope={'col'}>FECHA DE COMPRA<button type='button' style={{maxHeight: '50px', marginLeft: '5px'}} className='btn btn-dark p-1' onClick={() => toggleDate()}>{otroBoton}</button></th>
+                                    <th scope={'col'}>FECHA DE COMPRA<button type='button' style={{ maxHeight: '50px', marginLeft: '5px' }} className='btn btn-dark p-1' onClick={() => toggleDate()}>{otroBoton}</button></th>
                                     <th scope={'col'}>FECHA DE VENTA</th>
-                                    
                                 </tr>
-
                             </thead>
                             <tbody>
-
                                 {vacas.map((item) => {
                                     return item.status === 'Comprado' ? <>
                                         <tr className='position-relative'>
-                                                <EditSalida ranchoId={ranchoId} item={item} functionObject={functionObject}></EditSalida>
+                                            <EditSalida ranchoId={ranchoId} item={item} functionObject={functionObject}></EditSalida>
                                         </tr>
                                     </> : null
                                 })}
                             </tbody>
                         </table>
                     </ListGroup>
-
                 </Modal.Body>
             </Modal>
-
         </div>
-
     </>
     )
 }
