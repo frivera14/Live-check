@@ -3,7 +3,7 @@ const db = require('./config/connection');
 const routes = require('./routes')
 const path = require('path')
 
-const PORT = process.env.port || 3001;
+const port = process.env.PORT || 27017;
 const app = express();
 
 app.use(express.urlencoded({ extended: true }))
@@ -20,7 +20,7 @@ app.get('*', (req, res) => {
   })
 
 db.once('open', () => {
-    app.listen(PORT, () => {
-        console.log(`🌍 Now listening on localhost:${PORT}`)
+    app.listen(port, () => {
+        console.log(`🌍 Now listening on localhost:${port}`)
     })
 })
