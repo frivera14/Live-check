@@ -1,10 +1,10 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-restricted-globals */
 
 const CACHE_NAME = "live-check-cache";
 
 // Define the files to cache
 const urlsToCache = [
-  "/",
   "/icons/android-launchericon-48-48.png",
   "/icons/android-launchericon-72-72.png",
   "/icons/android-launchericon-96-96.png",
@@ -13,8 +13,7 @@ const urlsToCache = [
   "/icons/android-launchericon-512-512.png",
   "/index.html",
   "/manifest.json",
-  "/favicon.ico",
-  "../src/index.js"
+  "/favicon.ico"
 ];
 
 // Install the service worker
