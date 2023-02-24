@@ -14,7 +14,7 @@ function SignUpModal() {
     
       const createUser = (e) => {
         e.preventDefault();
-    
+        
         fetch('/api/users', {
           method: 'post',
           body: JSON.stringify(signUpForm),

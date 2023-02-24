@@ -1,16 +1,17 @@
-const { User } = require('../models')
+const  User    = require('../models/User')
 const { signToken } = require('../utils/auth')
 
 const userController = {
-    createUser({ body }, res) {
-        User.create(body)
+    createUser({body}, res) {
+        console.log(body)
+        User.create(body)        
             .then(async (newData) => {
                 const user = await User.findOne(newData)
                 if (!user) {
                     alert('Error: No user found/Existing User')
                 }
                 const token = signToken(user)
-                res.json({ token })
+                res.json(token)
 
             })
             .catch(err => res.status(400).json(err))
@@ -30,23 +31,25 @@ const userController = {
             .catch(err => res.status(400).json(err))
     },
 
-    userLogin(req, res) {
-        User.findOne({ username: req.body.username })
+    userLogin({body}, res) {
+        User.findOne({ body })
             .then(async (userData) => {
-
+                
                 const user = await User.findOne(userData)
+                console.log(user)
                 if (!user) {
                     return res.status(400).json({ message: 'no user' })
                 }
-
                 const correctPw = await user.isCorrectPassword(req.body.password)
+                
+
 
                 if (!correctPw) {
                     return res.status(401).json({ message: 'Incorrect password' })
                 }
                 const token = signToken(user)
 
-                return res.status(200).json({ token, user })
+             return res.status(200).json(token)
 
             })
             .catch(err => res.json(err))

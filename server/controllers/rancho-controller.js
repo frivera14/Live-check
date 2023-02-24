@@ -1,5 +1,5 @@
 const { Rancho, Ganado }  = require('../models/Rancho');
-const { User } = require('../models');
+const User = require('../models/User');
 
 
 const ranchoController = {
@@ -15,6 +15,7 @@ const ranchoController = {
     },
 
     createGanado({params, body}, res) {
+        console.log(body)
         Ganado.create(body)
         .then((data) => {
             return Rancho.findOneAndUpdate({ _id: params.id}, { $push: {ganado: data }}, { new: true, runValidators: true})

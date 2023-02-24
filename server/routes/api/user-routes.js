@@ -17,7 +17,7 @@ router
     .route('/')
     .get(getAllUsers)
     .post(createUser)
-    .delete(deleteManyUsers)
+    .delete(deleteManyUsers);
 
 router
     .route('/:id')

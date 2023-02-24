@@ -1,16 +1,14 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt')
 
 
 const UserSchema = new Schema({
     username: {
         type: String,
-        required: true,
         unique: true
     },
     password: {
         type: String, 
-        required: true 
     },
     ranchos: [ {
         type: Schema.Types.ObjectId,
@@ -21,9 +19,6 @@ const UserSchema = new Schema({
     toJSON: {
         virtuals: true,
         getters: true,
-    },
-    toObject: {
-        virtuals: true
     },
     id: false
 });
@@ -44,4 +39,4 @@ const User = model('User', UserSchema)
 
 
 
-module.exports = User;
+module.exports =  User ;

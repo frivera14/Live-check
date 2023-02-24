@@ -20,9 +20,10 @@ function LoginModal() {
           headers: { 'Content-Type': 'application/json' }
         }).then(response =>
           response.json()
-        ).then((result) => {
-          Auth.login(result.token)
-        });
+        ).then((result) => 
+        {console.log(result.token)
+        Auth.login(result.token)}
+        );
       };
 
 
