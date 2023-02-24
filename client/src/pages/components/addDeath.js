@@ -27,6 +27,7 @@ function AddDeath({ cows, funciones }) {
 
     return (
         <>
+
             <td className='p-2 m-2'>{cows.siniiiga}</td>
             <td className='p-2 m-2'>{cows.etapa}</td>
             <td className='p-2 m-2'>{dateFormat(cows.createdAt)}</td>

@@ -33,6 +33,7 @@ function AllCows() {
             setDelete(true)
         }
     }
+
     
     const handleSwitch = () => {
         if (buttonValue === '↓') {
@@ -72,6 +73,8 @@ function AllCows() {
         .then(() => setDelete(false))
     }
 
+
+
     return (
         <>
             {Auth.getToken() && Auth.getProfile().data._id === ranchData.owner ? <>
@@ -98,11 +101,14 @@ function AllCows() {
                                 return item.status === 'Comprado' ?
                                     <>
                                         {editAll ? <>
+
                                         <tr className='position-relative'>
                                             <EditStock item={item} ranchId={ranchId[2]}></EditStock>
                                         </tr>
+                                        
                                         </> : 
                                         <tr className='position-relative'>
+
                                             <td className='p-2 m-2'>{item.siniiiga}</td>
                                             <td className='p-2 m-2'>{item.etapa}</td>
                                             <td className='p-2 m-2'>{item.guia}</td>
@@ -112,17 +118,24 @@ function AllCows() {
                                             <td className='p-2 m-2'>{item.consignado}</td>
                                             <td className='p-2 m-2'>{dateFormat(item.createdAt)}</td>
                                             {deleteBtn ? <button type='button' name={item._id} style={{borderRadius: '20px', maxHeight: '30px', alignItems: 'center'}} onClick={deleteConfirm} className='btn d-flex btn-sm btn-danger bg-danger text-light position-absolute top-50 start-100 translate-middle'>X</button>: <></>}
+
                                         </tr>
+                                        
                                         }
+
                                     </>
                                     : null
+
                             })}
+
                         </tbody>
                     </table>
                 </div>
+
             </> : <>
                 <h3 className='m-4 text-light'>No tienes acceso a estos datos</h3>
             </>}
+
         </>
     )
 }
