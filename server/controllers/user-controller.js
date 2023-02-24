@@ -31,25 +31,24 @@ const userController = {
             .catch(err => res.status(400).json(err))
     },
 
-    userLogin({body}, res) {
-        User.findOne({ body })
-            .then(async (userData) => {
-                
+    userLogin(req, res) {
+        User.findOne({username: req.body.username})
+        .then(async (userData) => {
                 const user = await User.findOne(userData)
-                console.log(user)
                 if (!user) {
                     return res.status(400).json({ message: 'no user' })
                 }
                 const correctPw = await user.isCorrectPassword(req.body.password)
                 
-
-
+                if (correctPw){
+                    console.log(user)}
+                                 
                 if (!correctPw) {
                     return res.status(401).json({ message: 'Incorrect password' })
                 }
+                
                 const token = signToken(user)
-
-             return res.status(200).json(token)
+              return res.status(200).json({token, user})
 
             })
             .catch(err => res.json(err))

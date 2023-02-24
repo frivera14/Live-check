@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const UserSchema = new Schema({
     username: {
         type: String,
+        unique: true
     },
     password: {
         type: String, 
@@ -18,6 +19,9 @@ const UserSchema = new Schema({
     toJSON: {
         virtuals: true,
         getters: true,
+    },
+    toObject: {
+        virtuals: true
     },
     id: false
 });

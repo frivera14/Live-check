@@ -21,8 +21,7 @@ function LoginModal() {
         }).then(response =>
           response.json()
         ).then((result) => 
-        {console.log(result.token)
-        Auth.login(result.token)}
+        Auth.login(result.token)
         );
       };
 
