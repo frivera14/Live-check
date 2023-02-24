@@ -28,7 +28,6 @@ class AuthService {
   }
 
   login(idToken) {
-
     if (typeof idToken !== 'undefined') {
       localStorage.setItem('id_token', idToken);
       localStorage.setItem('loggedIn', true);

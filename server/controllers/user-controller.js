@@ -4,7 +4,7 @@ const { signToken } = require('../utils/auth')
 const userController = {
     createUser({body}, res) {
         console.log(body)
-        User.create({body})        
+        User.create(body)        
             .then(async (newData) => {
                 const user = await User.findOne(newData)
                 if (!user) {
