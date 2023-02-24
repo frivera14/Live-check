@@ -4,14 +4,14 @@ const { signToken } = require('../utils/auth')
 const userController = {
     createUser({body}, res) {
         console.log(body)
-        User.create(body)        
+        User.create({body})        
             .then(async (newData) => {
                 const user = await User.findOne(newData)
                 if (!user) {
                     alert('Error: No user found/Existing User')
                 }
                 const token = signToken(user)
-                res.json(token)
+                res.json({token, user})
 
             })
             .catch(err => res.status(400).json(err))
