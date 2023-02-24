@@ -15,7 +15,7 @@ const urlsToCache = [
   "/manifest.json",
   "/favicon.ico",
   "/logo192.png",
-  "../public/src"
+  "../src/index.js"
 ];
 
 // Install the service worker
