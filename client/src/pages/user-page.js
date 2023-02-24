@@ -40,8 +40,13 @@ function UserPage({ profileId }) {
 
     return (
         <>
+
             <div>
+
                 <button type='button' onClick={() => setShow(true)} className='btn btn-success mb-2'>+ Agregar Rancho</button>
+
+
+
 
                 {view.ranchos?.map((item) => {
                     return <>
@@ -59,8 +64,13 @@ function UserPage({ profileId }) {
                         </Card>
                     </>
                 })}
+
+
             </div>
             <Modal show={show} onHide={() => setShow(false)}>
+                <Modal.Header>
+
+                </Modal.Header>
                 <Modal.Body>
                     <Form>
                         <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
