@@ -15,15 +15,17 @@ const monthMap = {
 
 
 const dateFormat = (date) => {
- 
-  const splitted = date.split('-')
-  const mes = splitted[1]
-  const day = splitted[2].slice(0, 2)
+ if (date) {
 
-
-
-
-  return `${day} de ${monthMap[mes]}, ${splitted[0]}`
+   const splitted = date.split('-')
+   const mes = splitted[1]
+   const day = splitted[2].slice(0, 2)
+   
+   
+   
+   
+   return `${day} de ${monthMap[mes]}, ${splitted[0]}`
+  }
 }
 
 const tickFormat = (date) => {

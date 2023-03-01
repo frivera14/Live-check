@@ -165,7 +165,7 @@ function IndRanch() {
                                                 <td className='p-2 m-2'>{item.origen}</td>
                                                 <td className='p-2 m-2'>{item.propietario}</td>
                                                 <td className='p-2 m-2'>{item.consignado}</td>
-                                                <td className='p-2 m-2'>{dateFormat(item.createdAt)}</td>
+                                                <td className='p-2 m-2'>{item.createdAt !== '' ? dateFormat(item.createdAt) : <></>}</td>
 
                                             </tr>
                                         </>
