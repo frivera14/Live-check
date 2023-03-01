@@ -3,7 +3,6 @@ const { Schema, model } = require('mongoose');
 const GanadoSchema = new Schema({
     siniiiga: {
         type: Number,
-        unique: true,
     },
     etapa: {
         type: String, 
