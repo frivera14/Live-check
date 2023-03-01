@@ -9,6 +9,7 @@ const chonteGanado = require('./chonteGanado.json')
 const db = require('../config/connection');
 
 db.once('open', async () => {
+    Ganado.deleteMany({})
     const elusuario = await User.create({username: 'ranchos.ricardo1', password: 'elcarricito2023'})
     const lasMulas = await Rancho.create({ranchName: 'La Mula', ubicacion: '', owner: elusuario._id})
     const elCinco = await Rancho.create({ranchName: 'El 5', ubicacion: '', owner: elusuario._id})

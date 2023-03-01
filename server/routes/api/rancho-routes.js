@@ -14,6 +14,8 @@ const {
 } = require('../../controllers/gasto-controller')
 
 
+
+
 router.route('/:id')
     .get(getSingleRancho)
     .post(createGanado)
